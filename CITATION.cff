@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite this software artifact; cite the associated manuscript separately when its publication record is available."
+title: "Side-scan sonar sim-to-real domain adaptation"
+type: software
+authors:
+  - family-names: "Ren"
+    given-names: "Luyu"
+  - family-names: "Ma"
+    given-names: "Benjun"
+repository-code: "https://github.com/dalu0415/sss-sim2real-domain-adaptation-code"
+license: MIT
+abstract: >-
+  Code, configuration records, dataset metadata, and structured evidence for a
+  cost-aware, minority-class evaluation of adversarial domain adaptation in
+  side-scan sonar sim-to-real classification.
+keywords:
+  - "side-scan sonar"
+  - "sim-to-real"
+  - "domain adaptation"
+  - "minority-class evaluation"

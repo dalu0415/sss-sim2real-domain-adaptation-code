@@ -1,0 +1,150 @@
+schema_version: 1
+purpose: "Frozen descriptive contract for the simulation-source validity assessment."
+
+arms:
+  arm0:
+    dataset_id: "arm0_native_baseline"
+    n_airplane: 90
+    n_ship: 400
+    role: "most-original reference"
+  arm1:
+    dataset_id: "arm1_low_level_realism"
+    n_airplane: 90
+    n_ship: 400
+    role: "low-level intensity/contrast and heuristic-shadow stage"
+  arm2:
+    dataset_id: "arm2_selected_source"
+    n_airplane: 90
+    n_ship: 400
+    role: "selected source with revised ship morphology and interior treatment"
+  arm3:
+    dataset_id: "arm3_internal_structure"
+    n_airplane: 90
+    n_ship: 400
+    role: "arm2 plus internal ship structure"
+
+format_probe:
+  scope: "per object class; synthetic versus KLSG-II domain label"
+  features:
+    normalized_grayscale_histogram_bins: 32
+    grayscale_thumbnail: [8, 8]
+    total_dimensions: 96
+  balance_to_smaller_domain: true
+  resamples: 20
+  folds_per_resample: 5
+  fold_level_auc_values: 100
+  correlated_fold_values: true
+  classifier:
+    type: "logistic regression"
+    C: 1.0
+    solver: "liblinear"
+    max_iter: 1000
+  random_seed: 42
+  stored_auc_std:
+    ddof: 0
+    interpretation: "descriptive SD across correlated fold-level AUC values; not SE or CI"
+  historical_gate:
+    metric: "ship AUC mean"
+    operator: "<="
+    threshold: 0.85
+    scope: "prospective low-level gate represented by arm1 only"
+    later_arms: "arm2 and arm3 are direction-only, not newly pass/fail gated"
+    interpretation: "necessary low-level check, not sufficient evidence of realism"
+
+e2:
+  target:
+    dataset: "KLSG-II"
+    n_airplane: 66
+    n_ship: 487
+    n_total: 553
+    same_fixed_inputs_for_all_cells: true
+  full_cells:
+    arms: [0, 1, 2, 3]
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    count: 48
+  structure_subset_cells:
+    arms: [2, 3]
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    changed_ship_count: 263
+    unchanged_ship_count: 137
+    airplane_count: 90
+    source_training_count: 353
+    count: 24
+  model:
+    backbone: "ResNet-18"
+    initialization: "ImageNet IMAGENET1K_V1"
+    classifier_classes: 2
+  optimization:
+    optimizer: "Adam"
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+    batch_size: 32
+    epochs: 40
+    loss: "source class-balanced weighted cross-entropy"
+  prediction:
+    last_k_epochs: 5
+    operation: "softmax each checkpoint, mean probabilities, then argmax"
+  target_label_policy:
+    training: "not used"
+    validation: "not used"
+    early_stopping: "not used"
+    checkpoint_selection: "fixed last five epochs"
+    frozen_final_scoring: "used"
+  execution_contract:
+    arms_argument: "selects full-data training cells; normal mode still validates all four source arms"
+    structure_subset_requires_arms: [2, 3]
+    partial_seed_run_rewrites_summary: false
+    airplane_control: "arm1, arm2, and arm3 filename sets and image bytes must match"
+    ship_roster_control: "arm2 and arm3 filename sets must match before byte comparison"
+  cache_contract:
+    source_tree_sha256: true
+    target_manifest_md5: true
+    structure_subset_filename_sha256: true
+    normalized_protocol_sha256: true
+    runner_source_sha256: true
+    software_environment_sha256:
+      training: "Python, platform, PyTorch, torchvision, NumPy, OpenCV, CUDA, cuDNN, and device"
+      format_probe: "Python, platform, NumPy, OpenCV, and scikit-learn"
+    structured_outputs_atomic_replace: true
+    frozen_historical_cells_have_public_cache_signatures: false
+
+paired_analysis:
+  pairing_unit: "same training seed across two arms"
+  n_pairs: 12
+  primary_interval:
+    type: "two-sided paired-t"
+    confidence: 0.95
+    df: 11
+    t_critical: 2.200985160082949
+  crosscheck_interval:
+    type: "paired percentile bootstrap over the same 12 differences"
+    resamples: 10000
+    random_seed: 12345
+  decision_rule: "EFFECTIVE only when the primary paired-t interval excludes zero"
+  interval_includes_zero_label: "INCONCLUSIVE"
+  multiplicity_correction: null
+  ceiling_macro_f1:
+    exact_reference_mean: 0.889547
+    rounded_value_used: 0.890
+    source: "separate KLSG-II real-to-real five-fold OOF supervised reference"
+
+selection:
+  selected_arm: 2
+  basis:
+    - "lowest observed ship format-probe AUC"
+    - "clear arm0-to-arm2 task-transfer improvement under the paired rule"
+    - "arm2-to-arm3 primary ship intervals include zero"
+    - "parsimony: no additional internal-structure module"
+  not_claimed:
+    - "arm2 performance dominance over arm3"
+    - "universal physical realism"
+    - "generalization to unseen real domains"
+
+limitations:
+  target_aware_source_selection: true
+  untouched_external_validation: false
+  interval_scope: "training-seed variation conditional on one fixed target set"
+  format_probe_group_split: false
+  frozen_format_fold_auc_values_retained: false
+  frozen_source_arm_byte_fingerprints_retained: false
+  external_immutable_registration: false

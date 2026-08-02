@@ -1,0 +1,251 @@
+schema_version: 1
+purpose: "Descriptive frozen record of the configurations used in the paper; CLI-exposed values are passed by the command table and remaining locked values are constants in the trainers."
+
+data:
+  source_root: "data/raw/ai4simulate"
+  target_root: "data/raw/SeabedObjects"
+  split_table: "data/split/splits.csv"
+  target_unlabeled_manifest: "data/split/klsg_unlabeled_manifest.txt"
+  target_churn_manifest: "data/split/klsg_churn100_manifest.txt"
+  split_seed: 42
+  n_folds: 5
+  classes: ["airplane", "ship"]
+  source_class_counts: [90, 400]
+  target_image_count: 553
+  target_label_policy:
+    uda_training: "forbidden"
+    uda_model_selection: "forbidden"
+    fold_stratification: "used only to construct the supervised-ceiling folds"
+    supervised_ceiling: "allowed only through the explicit authorization gate"
+    final_scoring: "allowed only after training/model selection is frozen"
+
+repetitions:
+  primary_seeds: [0, 1, 2, 3, 4]
+  primary_folds: [0, 1, 2, 3, 4]
+  frozen_diag_supplementary_seed: 5
+  note: "Seed 5 was added only to the frozen-BN diagnostic variance check; paired primary comparisons use common seeds 0-4."
+
+input:
+  image_size: 224
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+  augmentation:
+    random_resized_crop_scale: [0.8, 1.0]
+    horizontal_flip_probability: 0.5
+    rotation_degrees: 15
+    brightness_jitter: 0.15
+    contrast_jitter: 0.15
+    multiplicative_speckle_sigma: 0.1
+    vertical_flip: false
+
+model:
+  backbone: "ResNet-18"
+  initialization: "ImageNet IMAGENET1K_V1"
+  full_finetuning: true
+  bottleneck: false
+  classifier_classes: 2
+
+optimization:
+  epochs: 40
+  last_k: 5
+  batch_size_source: 64
+  batch_size_target: 64
+  optimizer: "SGD"
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0005
+  backbone_learning_rate: 0.001
+  classifier_learning_rate: 0.01
+  discriminator_learning_rate: 0.01
+  scheduler:
+    name: "inverse_decay"
+    formula: "base_lr * (1 + alpha * p)^(-beta)"
+    alpha: 10.0
+    beta: 0.75
+    p: "global_step / total_steps"
+  class_balanced_cross_entropy:
+    beta: 0.999
+    source_fold_train_counts: [72, 320]
+
+postprocessing:
+  last_k:
+    epochs: [36, 37, 38, 39, 40]
+    operation: "softmax each checkpoint, then average probabilities"
+    accumulation_dtype: "float64 after each checkpoint softmax"
+    final_scoring_requires_exactly_k: 5
+    model_selection: "fixed last-K window; no target labels"
+    entries:
+      source_only:
+        script: "src/run1_s4_baseline_ceiling/eval_lastk.py"
+        args: ["--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      cdan:
+        script: "src/run2_s5_cdan/eval_lastk.py"
+        args: ["--variant", "cdan", "--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      cdan_entropy:
+        script: "src/run2_s5_cdan/eval_lastk.py"
+        args: ["--variant", "cdan-e", "--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      iw_cdan:
+        script: "src/run3_s5_iwcdan/eval_lastk.py"
+        args: ["--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      iw_cdan_frozen_main:
+        script: "src/run4_s5_iwcdan_frozen/eval_lastk.py"
+        args: ["--label", "main", "--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      iw_cdan_frozen_diag:
+        script: "src/run4_s5_iwcdan_frozen/eval_lastk.py"
+        args: ["--label", "diag", "--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+      iw_cdan_dsbn:
+        script: "src/run5_s5_iwcdan_dsbn/eval_lastk.py"
+        args: ["--seed", "{seed}", "--fold", "{fold}", "--k", "5"]
+  adabn:
+    passes: 1
+    momentum: null
+    operation: "reset running statistics and recompute each checkpoint independently on all 553 unlabeled target images"
+    checkpoint_epochs: [36, 37, 38, 39, 40]
+    entries:
+      source_only:
+        script: "src/run1_s4_baseline_ceiling/eval_adabn.py"
+        checkpoint_directory: "results/run1_s4_baseline_ceiling/sgd_full_s{seed}_f{fold}"
+        checkpoint_filename: "sgd_full_epoch{epoch:03d}.pth"
+      cdan:
+        script: "src/run2_s5_cdan/eval_adabn.py"
+        checkpoint_directory: "results/run2_s5_cdan/cdan_full_s{seed}_f{fold}"
+        checkpoint_filename: "cdan_full_epoch{epoch:03d}.pth"
+      iw_cdan:
+        script: "src/run3_s5_iwcdan/eval_adabn.py"
+        checkpoint_directory: "results/run3_s5_iwcdan/iwcdan_full_s{seed}_f{fold}"
+        checkpoint_filename: "iwcdan_full_epoch{epoch:03d}.pth"
+
+evaluation:
+  entry_point: "src/evaluate.py"
+  analysis_contract: "paper_primary_v1"
+  class_order: ["airplane", "ship"]
+  primary_prediction_rule: "numpy argmax on float64 last-K mean probabilities"
+  exact_checkpoint_count: 5
+  classification_metrics:
+    - "macro-F1 as the arithmetic mean of airplane and ship F1"
+    - "per-class precision, recall, F1, and support"
+    - "2x2 confusion matrix with rows=true and columns=predicted"
+    - "airplane Average Precision (legacy result key: airplane_pr_auc)"
+  aggregation:
+    order: "first arithmetic-mean exactly five folds within each arm/seed, then pair equal seeds"
+    expected_folds: [0, 1, 2, 3, 4]
+    expected_paired_seeds: [0, 1, 2, 3, 4]
+    collapsed_folds: "included; collapse is a diagnostic flag, never a filter"
+    interval: "two-sided 95% paired-t interval over seed-matched differences"
+    paper_head_to_head:
+      arm_a: "source_only_adabn"
+      arm_b: ["cdan", "cdan_adabn", "iw_cdan", "iw_cdan_adabn"]
+      full_metrics:
+        - "macro_f1"
+        - "per_class.airplane.f1"
+        - "per_class.airplane.precision"
+        - "per_class.airplane.recall"
+        - "airplane_pr_auc"
+      headline_metrics:
+        - "macro_f1"
+        - "per_class.airplane.f1"
+        - "airplane_pr_auc"
+      multiplicity_families:
+        - "headline12 = four comparisons x three headline metrics"
+        - "family20 = four comparisons x all five metrics"
+      corrections: ["Holm", "Benjamini-Hochberg FDR"]
+  collapse_diagnostic:
+    airplane_fraction_low_inclusive: 0.02
+    airplane_fraction_high_inclusive: 0.60
+    minimum_valid_routes_for_verdict: 2
+    routes:
+      - "last epoch target-prediction airplane fraction"
+      - "last-K target-prediction airplane fraction"
+      - "whether any epoch predicted exactly one class for every target sample"
+    comparison_input: "each score record must be enriched by src/evaluate.py collapse"
+  target_label_diagnostics:
+    threshold_sweep: "read-only; never selects or writes a deployed threshold"
+    per_epoch_oracle: "read-only optimistic upper bound; never selects the primary checkpoint"
+
+methods:
+  source_only:
+    script: "src/run1_s4_baseline_ceiling/train_source_only_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}"]
+    checkpoint_tag: "sgd_full"
+    bn: "default"
+  source_only_adabn:
+    script: "src/run1_s4_baseline_ceiling/eval_adabn.py"
+    host: "source_only"
+    args: ["--seed", "{seed}", "--fold", "{fold}", "--passes", "1", "--ckpt", "{five_checkpoint_paths_from_postprocessing.adabn.entries.source_only}"]
+  cdan:
+    script: "src/run2_s5_cdan/train_cdan_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}"]
+    checkpoint_tag: "cdan_full"
+    adversarial_trade_off: 1.0
+    grl_alpha: 10.0
+    entropy_conditioning: false
+    bn: "default"
+  cdan_entropy:
+    script: "src/run2_s5_cdan/train_cdan_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--entropy"]
+    checkpoint_tag: "cdan_e_full"
+    adversarial_trade_off: 1.0
+    grl_alpha: 10.0
+    entropy_conditioning: true
+    bn: "default"
+  cdan_adabn:
+    script: "src/run2_s5_cdan/eval_adabn.py"
+    host: "cdan"
+    args: ["--seed", "{seed}", "--fold", "{fold}", "--passes", "1", "--ckpt", "{five_checkpoint_paths_from_postprocessing.adabn.entries.cdan}"]
+  iw_cdan:
+    script: "src/run3_s5_iwcdan/train_iwcdan_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}"]
+    checkpoint_tag: "iwcdan_full"
+    adversarial_trade_off: 1.0
+    iw_applies_to: "alignment loss only"
+    qp_update_mult: 1
+    ema_factor: 0.5
+    bn: "default"
+  iw_cdan_adabn:
+    script: "src/run3_s5_iwcdan/eval_adabn.py"
+    host: "iw_cdan"
+    args: ["--seed", "{seed}", "--fold", "{fold}", "--passes", "1", "--ckpt", "{five_checkpoint_paths_from_postprocessing.adabn.entries.iw_cdan}"]
+  iw_cdan_frozen_main:
+    script: "src/run4_s5_iwcdan_frozen/train_iwcdan_frozen_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--config-name", "main", "--lr-mult", "1.0", "--trade-off", "1.0"]
+    checkpoint_tag: "iwcdan_frozen_full"
+    output_label: "main"
+    bn: "frozen running statistics; learnable affine parameters"
+  iw_cdan_frozen_diag:
+    script: "src/run4_s5_iwcdan_frozen/train_iwcdan_frozen_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--config-name", "diag", "--lr-mult", "0.1", "--trade-off", "0.25"]
+    checkpoint_tag: "iwcdan_frozen_full"
+    output_label: "diag"
+    seeds: [0, 1, 2, 3, 4, 5]
+    bn: "frozen running statistics; learnable affine parameters"
+    status: "diagnostic configuration, not the primary common-setting arm"
+  iw_cdan_dsbn:
+    script: "src/run5_s5_iwcdan_dsbn/train_iwcdan_dsbn_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}"]
+    checkpoint_tag: "iwcdan_dsbn_full"
+    source_bn_branch: 0
+    target_bn_branch: 1
+  supervised_ceiling:
+    script: "src/run1_s4_baseline_ceiling/train_ceiling_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--authorize-klsg-labels", "--reason", "supervised ceiling"]
+    last_k: 5
+    target_labels: "training fold and held-out scoring only"
+  dann:
+    script: "src/extra/dann/train_dann_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}"]
+    checkpoint_tag: "dann_full"
+    adversarial_trade_off: 1.0
+    grl_alpha: 10.0
+  mcc:
+    script: "src/extra/mcc/train_mcc_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--temperature", "2.5", "--mu", "1.0"]
+    checkpoint_tag: "mcc_full"
+    temperature: 2.5
+    trade_off: 1.0
+  mdd:
+    script: "src/extra/mdd/train_mdd_sgd.py"
+    args: ["--epochs", "40", "--seed", "{seed}", "--fold", "{fold}", "--margin", "4.0", "--trade-off", "1.0"]
+    checkpoint_tag: "mdd_full"
+    margin: 4.0
+    trade_off: 1.0
+    grl_alpha: 10.0

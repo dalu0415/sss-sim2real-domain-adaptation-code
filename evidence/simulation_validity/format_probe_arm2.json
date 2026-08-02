@@ -1,0 +1,28 @@
+{
+  "arm": 2,
+  "arm_dir": "arm2_selected_source",
+  "klsg_dir": "KLSG-II/raw_format_probe",
+  "_note": "Per-class low-level separability probe: 20 repeated balanced resamples x 5-fold stratified CV = 100 correlated fold-level AUC values. Later shape/structure arms were interpreted directionally.",
+  "airplane": {
+    "auc_mean": 0.8228782755705834,
+    "auc_std": 0.06709096376711896,
+    "n_synthetic": 90,
+    "n_real": 66,
+    "n_balanced_per_domain": 66,
+    "n_resamples": 20,
+    "folds_per_resample": 5,
+    "n_auc_values": 100,
+    "auc_std_note": "Descriptive SD across correlated fold-level AUC values; not a standard error or confidence interval."
+  },
+  "ship": {
+    "auc_mean": 0.72471875,
+    "auc_std": 0.035818130556500294,
+    "n_synthetic": 400,
+    "n_real": 487,
+    "n_balanced_per_domain": 400,
+    "n_resamples": 20,
+    "folds_per_resample": 5,
+    "n_auc_values": 100,
+    "auc_std_note": "Descriptive SD across correlated fold-level AUC values; not a standard error or confidence interval."
+  }
+}

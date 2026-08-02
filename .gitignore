@@ -1,0 +1,54 @@
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments
+.venv/
+venv/
+env/
+.conda/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Third-party image data
+data/raw/
+
+# Generated training and evaluation artifacts
+results/
+outputs/
+runs/
+logs/
+checkpoints/
+tensorboard/
+*.log
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Generated simulation-validity reports
+paired_delta_report_recomputed.md
+paired_delta_report_recomputed.json
+
+# Local archives and temporary files
+semi_synthetic_source_v*.zip
+*.tmp
+*.temp
+.tmp-*

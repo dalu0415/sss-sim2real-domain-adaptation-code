@@ -1,0 +1,181 @@
+{
+  "description": "SSS sim->real 主实验B 站1 数据划分（两套分层5折，划分一次固定，所有训练seed共用）",
+  "spec_refs": [
+    "plan §3.2.1",
+    "plan §3.2.2",
+    "plan §3.2.4"
+  ],
+  "generated_utc": "2026-06-14T13:56:50.765694+00:00",
+  "split_seed": 42,
+  "n_splits": 5,
+  "shuffle": true,
+  "sklearn_splitter": "StratifiedKFold(n_splits=5, shuffle=True, random_state=42)",
+  "stratify_by": "class label (airplane/ship), derived from subfolder name",
+  "scheme": "4 folds -> train, 1 fold -> test; 5-fold rotation; each sample tests exactly once",
+  "training_seeds_note": "训练 seed 0..4 是 run 时随机性(§3.2.2)，不在本划分内",
+  "fold_usage": {
+    "arm2": "源训练跑法",
+    "klsg": "仅 ceiling"
+  },
+  "csv_file": "splits.csv",
+  "csv_columns": [
+    "domain",
+    "fold",
+    "split",
+    "filepath",
+    "label"
+  ],
+  "csv_sha256": "daac2764fd40a785037f142c49ac2b682eb36fc7f0ede4bbf41d03b29278f0c8",
+  "datasets": {
+    "arm2": {
+      "root": "data/raw/ai4simulate",
+      "n_samples": 490,
+      "global_class_counts": {
+        "airplane": 90,
+        "ship": 400
+      },
+      "folds": [
+        {
+          "fold": 0,
+          "train": {
+            "airplane": 72,
+            "ship": 320,
+            "total": 392
+          },
+          "test": {
+            "airplane": 18,
+            "ship": 80,
+            "total": 98
+          }
+        },
+        {
+          "fold": 1,
+          "train": {
+            "airplane": 72,
+            "ship": 320,
+            "total": 392
+          },
+          "test": {
+            "airplane": 18,
+            "ship": 80,
+            "total": 98
+          }
+        },
+        {
+          "fold": 2,
+          "train": {
+            "airplane": 72,
+            "ship": 320,
+            "total": 392
+          },
+          "test": {
+            "airplane": 18,
+            "ship": 80,
+            "total": 98
+          }
+        },
+        {
+          "fold": 3,
+          "train": {
+            "airplane": 72,
+            "ship": 320,
+            "total": 392
+          },
+          "test": {
+            "airplane": 18,
+            "ship": 80,
+            "total": 98
+          }
+        },
+        {
+          "fold": 4,
+          "train": {
+            "airplane": 72,
+            "ship": 320,
+            "total": 392
+          },
+          "test": {
+            "airplane": 18,
+            "ship": 80,
+            "total": 98
+          }
+        }
+      ]
+    },
+    "klsg": {
+      "root": "data/raw/SeabedObjects",
+      "n_samples": 553,
+      "global_class_counts": {
+        "airplane": 66,
+        "ship": 487
+      },
+      "folds": [
+        {
+          "fold": 0,
+          "train": {
+            "airplane": 52,
+            "ship": 390,
+            "total": 442
+          },
+          "test": {
+            "airplane": 14,
+            "ship": 97,
+            "total": 111
+          }
+        },
+        {
+          "fold": 1,
+          "train": {
+            "airplane": 53,
+            "ship": 389,
+            "total": 442
+          },
+          "test": {
+            "airplane": 13,
+            "ship": 98,
+            "total": 111
+          }
+        },
+        {
+          "fold": 2,
+          "train": {
+            "airplane": 53,
+            "ship": 389,
+            "total": 442
+          },
+          "test": {
+            "airplane": 13,
+            "ship": 98,
+            "total": 111
+          }
+        },
+        {
+          "fold": 3,
+          "train": {
+            "airplane": 53,
+            "ship": 390,
+            "total": 443
+          },
+          "test": {
+            "airplane": 13,
+            "ship": 97,
+            "total": 110
+          }
+        },
+        {
+          "fold": 4,
+          "train": {
+            "airplane": 53,
+            "ship": 390,
+            "total": 443
+          },
+          "test": {
+            "airplane": 13,
+            "ship": 97,
+            "total": 110
+          }
+        }
+      ]
+    }
+  }
+}
