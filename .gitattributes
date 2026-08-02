@@ -1,0 +1,3 @@
+# The frozen evidence is verified against byte-level SHA-256 manifests.
+# Keep its checkout representation LF even when a consumer enables autocrlf.
+evidence/simulation_validity/** text eol=lf
