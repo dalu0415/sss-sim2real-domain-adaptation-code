@@ -1,0 +1,563 @@
+{
+  "candidate": {
+    "arm_id": "ASDA",
+    "scope": "all",
+    "per_seed_points": [
+      {
+        "seed": 0,
+        "n_folds": 5,
+        "values": {
+          "macro_f1": 0.5499651745314363,
+          "airplane_f1": 0.16041827274703988,
+          "airplane_pr_auc": 0.35851896491915275,
+          "airplane_p": 0.7203463203463203,
+          "airplane_r": 0.09090909090909091,
+          "ship_f1": 0.9395120763158328,
+          "ship_p": 0.8898351197385852,
+          "ship_r": 0.9950718685831623
+        }
+      },
+      {
+        "seed": 1,
+        "n_folds": 5,
+        "values": {
+          "macro_f1": 0.31029894211276454,
+          "airplane_f1": 0.22630619009430078,
+          "airplane_pr_auc": 0.26364667790658014,
+          "airplane_p": 0.3201370581411065,
+          "airplane_r": 0.6575757575757576,
+          "ship_f1": 0.39429169413122833,
+          "ship_p": 0.9440036936929797,
+          "ship_r": 0.40451745379876797
+        }
+      },
+      {
+        "seed": 2,
+        "n_folds": 5,
+        "values": {
+          "macro_f1": 0.5671492326275647,
+          "airplane_f1": 0.19288790030383898,
+          "airplane_pr_auc": 0.42333065789879376,
+          "airplane_p": 0.8362393162393162,
+          "airplane_r": 0.11212121212121211,
+          "ship_f1": 0.9414105649512903,
+          "ship_p": 0.892276751861291,
+          "ship_r": 0.9963039014373717
+        }
+      },
+      {
+        "seed": 3,
+        "n_folds": 5,
+        "values": {
+          "macro_f1": 0.5541785814982648,
+          "airplane_f1": 0.16933067562196197,
+          "airplane_pr_auc": 0.41090260744770485,
+          "airplane_p": 0.6975901875901875,
+          "airplane_r": 0.1,
+          "ship_f1": 0.9390264873745677,
+          "ship_p": 0.8906489578798062,
+          "ship_r": 0.9930184804928132
+        }
+      },
+      {
+        "seed": 4,
+        "n_folds": 5,
+        "values": {
+          "macro_f1": 0.11369881601261904,
+          "airplane_f1": 0.21435630425552993,
+          "airplane_pr_auc": 0.15182853097847376,
+          "airplane_p": 0.12004435056613132,
+          "airplane_r": 1.0,
+          "ship_f1": 0.013041327769708167,
+          "ship_p": 1.0,
+          "ship_r": 0.006570841889117043
+        }
+      }
+    ],
+    "across_seed": {
+      "macro_f1": {
+        "mean": 0.41905814935652985,
+        "sd": 0.2014931990088197,
+        "ci_lo": 0.16887129826437208,
+        "ci_hi": 0.6692450004486876,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "airplane_f1": {
+        "mean": 0.1926598686045343,
+        "sd": 0.02822513957831966,
+        "ci_lo": 0.15761372894585862,
+        "ci_hi": 0.22770600826320997,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "airplane_pr_auc": {
+        "mean": 0.321645487830141,
+        "sd": 0.11387275937846061,
+        "ci_lo": 0.18025378213378643,
+        "ci_hi": 0.46303719352649564,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "airplane_p": {
+        "mean": 0.5388714465766123,
+        "sd": 0.3040613784679123,
+        "ci_lo": 0.16132937968879646,
+        "ci_hi": 0.9164135134644282,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "airplane_r": {
+        "mean": 0.39212121212121215,
+        "sd": 0.41666721763048975,
+        "ci_lo": -0.12523947124229967,
+        "ci_hi": 0.9094818954847239,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "ship_f1": {
+        "mean": 0.6454564301085255,
+        "sd": 0.4252274502501208,
+        "ci_lo": 0.11746681408496829,
+        "ci_hi": 1.1734460461320828,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "ship_p": {
+        "mean": 0.9233529046345325,
+        "sd": 0.0486311361823687,
+        "ci_lo": 0.8629693736451408,
+        "ci_hi": 0.9837364356239241,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      },
+      "ship_r": {
+        "mean": 0.6790965092402464,
+        "sd": 0.45461313012953647,
+        "ci_lo": 0.11461975244767808,
+        "ci_hi": 1.243573266032815,
+        "n": 5,
+        "df": 4,
+        "t_crit": 2.7764451051977934
+      }
+    }
+  },
+  "runs": [
+    {
+      "seed": 0,
+      "fold": 0,
+      "attempt": "results/extra/asda/runs/asda_s0_f0/attempt_001",
+      "config_sha256": "a17d3703d1cbdae7bc7d78bad9be8f18d26da434f95e2b7b948aaf848d1e940d"
+    },
+    {
+      "seed": 0,
+      "fold": 1,
+      "attempt": "results/extra/asda/runs/asda_s0_f1/attempt_001",
+      "config_sha256": "e35d8653b2bccf361a8d9ec7f060ccb1ca71276296b4f3f8f787be727a1e19a4"
+    },
+    {
+      "seed": 0,
+      "fold": 2,
+      "attempt": "results/extra/asda/runs/asda_s0_f2/attempt_001",
+      "config_sha256": "f4acd0574db705094a4b2e319eb8b06beb44eec3c253c951be69d632d4bb0d29"
+    },
+    {
+      "seed": 0,
+      "fold": 3,
+      "attempt": "results/extra/asda/runs/asda_s0_f3/attempt_001",
+      "config_sha256": "41c43318d1c5c050efd0c9b3ec49e89b68c719049ea5f86ace002d3751943d50"
+    },
+    {
+      "seed": 0,
+      "fold": 4,
+      "attempt": "results/extra/asda/runs/asda_s0_f4/attempt_001",
+      "config_sha256": "08ab07b76ac9b13e9d5e7b55864f68e66539493ae8c9041b30facc140f2049e1"
+    },
+    {
+      "seed": 1,
+      "fold": 0,
+      "attempt": "results/extra/asda/runs/asda_s1_f0/attempt_001",
+      "config_sha256": "f14ff33b79944add067b2199253ae10c4bf1fb016b720cf97423122cd03b4fea"
+    },
+    {
+      "seed": 1,
+      "fold": 1,
+      "attempt": "results/extra/asda/runs/asda_s1_f1/attempt_001",
+      "config_sha256": "6078091c5d6f2b88718f79b0987a47911dd5a002f689e10013a619e777d36e06"
+    },
+    {
+      "seed": 1,
+      "fold": 2,
+      "attempt": "results/extra/asda/runs/asda_s1_f2/attempt_001",
+      "config_sha256": "c7a43e3caa1452c34ef8367b69115cac16ec6bafda1c86613d389936a1603dea"
+    },
+    {
+      "seed": 1,
+      "fold": 3,
+      "attempt": "results/extra/asda/runs/asda_s1_f3/attempt_001",
+      "config_sha256": "35681f897f6c2a5dafa52db92eb5135beb00d0482132020088c9c69910930314"
+    },
+    {
+      "seed": 1,
+      "fold": 4,
+      "attempt": "results/extra/asda/runs/asda_s1_f4/attempt_001",
+      "config_sha256": "5815eec4c604920dfc0c5bcdadc81ce074eaf553af2f265719f185b993599bec"
+    },
+    {
+      "seed": 2,
+      "fold": 0,
+      "attempt": "results/extra/asda/runs/asda_s2_f0/attempt_001",
+      "config_sha256": "bfb9faba01e896b4dd65c2c13f798a233f61e17482fcaf1da9cb05222b1cb199"
+    },
+    {
+      "seed": 2,
+      "fold": 1,
+      "attempt": "results/extra/asda/runs/asda_s2_f1/attempt_001",
+      "config_sha256": "5df8ee36c0053d5dcf27d09b3362056d8a0711f7944eeb3bc6d0cee293185ae3"
+    },
+    {
+      "seed": 2,
+      "fold": 2,
+      "attempt": "results/extra/asda/runs/asda_s2_f2/attempt_001",
+      "config_sha256": "b7c65ee24c3df1108b18c8fc698a830b3be805ef1b006c0e4c7a55d67dd7c9ae"
+    },
+    {
+      "seed": 2,
+      "fold": 3,
+      "attempt": "results/extra/asda/runs/asda_s2_f3/attempt_001",
+      "config_sha256": "23e0847eb3e0a9cace07c26a30e3f4e4dcf263cc6a3625511a1d6608bffb61bc"
+    },
+    {
+      "seed": 2,
+      "fold": 4,
+      "attempt": "results/extra/asda/runs/asda_s2_f4/attempt_001",
+      "config_sha256": "5aace01d46e2a8be0d6a1181e8c2a19647d265cd2c1225ae30ce13adbbdf99d4"
+    },
+    {
+      "seed": 3,
+      "fold": 0,
+      "attempt": "results/extra/asda/runs/asda_s3_f0/attempt_001",
+      "config_sha256": "3c88dac3b21a38e82153d8b06d0f52007fe008525b68f185c85cd03ce63924d4"
+    },
+    {
+      "seed": 3,
+      "fold": 1,
+      "attempt": "results/extra/asda/runs/asda_s3_f1/attempt_001",
+      "config_sha256": "ba2f2db40f22eb4e3f521ab964b0d49c36a5256a3830962048fb4b4b4c61987c"
+    },
+    {
+      "seed": 3,
+      "fold": 2,
+      "attempt": "results/extra/asda/runs/asda_s3_f2/attempt_001",
+      "config_sha256": "85ae12af1cb52ebed56fd35de170c9d4e051db64372661bc8c74bec784209017"
+    },
+    {
+      "seed": 3,
+      "fold": 3,
+      "attempt": "results/extra/asda/runs/asda_s3_f3/attempt_001",
+      "config_sha256": "dab5ae3f72ef27b14fcf92c6d2c27d61e42d5dfecc524f70cfacd4b2eba16c40"
+    },
+    {
+      "seed": 3,
+      "fold": 4,
+      "attempt": "results/extra/asda/runs/asda_s3_f4/attempt_001",
+      "config_sha256": "869290ca8a6b1d904491cca0efb67d9df7975ed09af279027b4203a97e8e128b"
+    },
+    {
+      "seed": 4,
+      "fold": 0,
+      "attempt": "results/extra/asda/runs/asda_s4_f0/attempt_001",
+      "config_sha256": "468a17e229ac695489ca23744bbc9b9ea2d5521a6fd6d73c7853c76668e262ed"
+    },
+    {
+      "seed": 4,
+      "fold": 1,
+      "attempt": "results/extra/asda/runs/asda_s4_f1/attempt_001",
+      "config_sha256": "3b6bcf129140251795915bb5896c955da2bff3f2151d1c416553b27aca7fe243"
+    },
+    {
+      "seed": 4,
+      "fold": 2,
+      "attempt": "results/extra/asda/runs/asda_s4_f2/attempt_001",
+      "config_sha256": "3cd0afb7d4b936bd58f31c2785aa6938e0138f32a4cc8c005d503af8f12ecb14"
+    },
+    {
+      "seed": 4,
+      "fold": 3,
+      "attempt": "results/extra/asda/runs/asda_s4_f3/attempt_001",
+      "config_sha256": "dcc844d1a8702123f906116a2f50ce351a413e50277b766764817aedecc47cb9"
+    },
+    {
+      "seed": 4,
+      "fold": 4,
+      "attempt": "results/extra/asda/runs/asda_s4_f4/attempt_001",
+      "config_sha256": "2f84edb924ea6e897e22afa37198d657eff0d610590ff38d20482ab7a4ca3b66"
+    }
+  ],
+  "paired_deltas_ASDA_minus_reference": {
+    "#1": [
+      {
+        "metric": "macro_f1",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.07044924847695444,
+          -0.3339481581696391,
+          -0.03460760409401609,
+          -0.09249980580966011,
+          -0.5078339855730143
+        ],
+        "mean": -0.20786776042465682,
+        "sd": 0.20499310785668798,
+        "ci_lo": -0.46240032233020745,
+        "ci_hi": 0.0466648014808938,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_f1",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.2099948404205643,
+          -0.16565037859279338,
+          -0.17770870660580204,
+          -0.24774161318803173,
+          -0.16525567557711124
+        ],
+        "mean": -0.19327024287686054,
+        "sd": 0.03548477364220302,
+        "ci_lo": -0.23733040879279388,
+        "ci_hi": -0.1492100769609272,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_pr_auc",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.007601510696934655,
+          -0.11616875166707236,
+          0.06459211796033604,
+          0.002316380635559223,
+          -0.2132981030791824
+        ],
+        "mean": -0.05403197336945883,
+        "sd": 0.11026023670934172,
+        "ci_lo": -0.19093813972487353,
+        "ci_hi": 0.08287419298595586,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_p",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          0.4330602427452716,
+          -0.01665382465196097,
+          0.5730637499098075,
+          0.36243323344784945,
+          -0.17129766198607232
+        ],
+        "mean": 0.23612114789297906,
+        "sd": 0.31549775771021327,
+        "ci_lo": -0.15562105936980675,
+        "ci_hi": 0.6278633551557649,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_r",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.43939393939393934,
+          0.17878787878787883,
+          -0.5272727272727273,
+          -0.4878787878787879,
+          0.43333333333333335
+        ],
+        "mean": -0.1684848484848485,
+        "sd": 0.4435415530416106,
+        "ci_lo": -0.7192144266040016,
+        "ci_hi": 0.38224472963430467,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      }
+    ],
+    "#2": [
+      {
+        "metric": "macro_f1",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.1282224896081372,
+          -0.37046238133510867,
+          -0.12012693318903844,
+          -0.14969034490329458,
+          -0.565058020731421
+        ],
+        "mean": -0.2667120339534,
+        "sd": 0.19630020617384256,
+        "ci_lo": -0.5104509327994365,
+        "ci_hi": -0.0229731351073634,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_f1",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.27714452908820775,
+          -0.20977881459501826,
+          -0.25692032687969424,
+          -0.30460997928667943,
+          -0.22118041915021336
+        ],
+        "mean": -0.2539268137999626,
+        "sd": 0.03917326538557691,
+        "ci_lo": -0.30256684712131515,
+        "ci_hi": -0.2052867804786101,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_pr_auc",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.09840833968360779,
+          -0.16902375718141854,
+          -0.006234250432158639,
+          -0.0640614556602534,
+          -0.2685373040530178
+        ],
+        "mean": -0.12125302140209122,
+        "sd": 0.10123830236520157,
+        "ci_lo": -0.24695697668822897,
+        "ci_hi": 0.0044509338840465346,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_p",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          0.2968890210835655,
+          -0.12906776485716442,
+          0.3895739182980396,
+          0.18158954957816498,
+          -0.30985321944585514
+        ],
+        "mean": 0.0858263009313501,
+        "sd": 0.29526362332771305,
+        "ci_lo": -0.2807919101338683,
+        "ci_hi": 0.45244451199656843,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      },
+      {
+        "metric": "airplane_r",
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "deltas": [
+          -0.3666666666666667,
+          0.23030303030303034,
+          -0.3424242424242424,
+          -0.3424242424242424,
+          0.5575757575757576
+        ],
+        "mean": -0.05272727272727271,
+        "sd": 0.4239641944789485,
+        "ci_lo": -0.5791483495392421,
+        "ci_hi": 0.47369380408469663,
+        "n": 5,
+        "t_crit": 2.7764451051977934,
+        "df": 4,
+        "ci_method": "paired_t"
+      }
+    ]
+  },
+  "reference_sha256": "f921ba4f27e29fd9f831c0a56fe64e1ce44b7adf24acf7c09fb7d230425ba414",
+  "inference_unit": "5 seed means, each mean contains5 folds; not25 independent samples",
+  "status": "Supplementary exploratory comparisons; no inherited confirmatory Holm family/p-values"
+}

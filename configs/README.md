@@ -74,6 +74,11 @@ arm that consumes target labels:
 python src/run1_s4_baseline_ceiling/train_ceiling_sgd.py --epochs 40 --seed {seed} --fold {fold} --authorize-klsg-labels --reason "supervised ceiling"
 ```
 
+The ASDA comparator is not part of `experiment_matrix.yaml`. Its fixed
+protocol is the `PROTOCOL` record in `src/extra/asda/common.py`, and its run
+matrix and label-authorized evaluation commands are documented in
+[`src/extra/asda/README.md`](../src/extra/asda/README.md).
+
 ## Last-K and AdaBN
 
 All formal models use epochs 36–40 (`K=5`). Last-K means applying softmax to

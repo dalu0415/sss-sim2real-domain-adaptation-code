@@ -1,0 +1,200 @@
+{
+  "implementation": "ASDA-SEL-01/A",
+  "protocol_sha256": "6d510e4df0e30a0a6f5d94c4dc5594e066ff9ba3be049e4b082777325ec6b53b",
+  "protocol": {
+    "id": "ASDA-SEL-01/A",
+    "classes": [
+      "airplane",
+      "ship"
+    ],
+    "backbone": "ResNet18 ImageNet1K_V1; all parameters trainable; feature_layers/fc",
+    "discriminator": "1024-1024-1024-1; ReLU/dropout0.5; Xavier normal/bias0; logits",
+    "batch_source": 64,
+    "batch_target": 64,
+    "joint_images": 320,
+    "views": 3,
+    "ra_ops": 3,
+    "ra_magnitude_index": 2,
+    "ra_bins": 31,
+    "ra_pool": "torchvision full 14",
+    "ra_interpolation": "NEAREST",
+    "ra_fill": 0,
+    "ra_input": "CPU uint8 round(255*clamp(float base)), ties-to-even; independent clones",
+    "base": "PIL crop(.8,1)/hflip.5/rotate15/jitter(.15,.15), ToTensor, speckle.1",
+    "gate": "2 * matches(original argmax, 3 augmented argmax) > 3",
+    "entropy": "last augmented view, reliable +H/unreliable -H; mean over original targets",
+    "domain": "p.detach outer f; source1/target0; source mean + target mean",
+    "grl": 1.0,
+    "lambda_domain": 1.0,
+    "lambda_entropy": 1.0,
+    "bn": "one joint forward; ordinary shared BN eps1e-5 momentum.1 affine/track true",
+    "source_ce": "effective number beta.999 counts72/320 mean-normalized weights; weighted mean",
+    "lr": [
+      0.001,
+      0.01,
+      0.01
+    ],
+    "momentum": 0.9,
+    "nesterov": true,
+    "weight_decay": 0.0005,
+    "scheduler": "after optimizer; (1+10*completed_steps/240)^-.75",
+    "epochs": 40,
+    "steps_per_epoch": 6,
+    "total_steps": 240,
+    "workers": 0,
+    "shuffle": true,
+    "drop_last": true,
+    "target_iterator": "8 full batches, persists across source epochs; renew only on exhaustion",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "saved_epochs": [
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "evaluation": "each checkpoint eval, all553 IDs, arithmetic mean of 5 softmax probabilities",
+    "aggregation": "score each fold; average 5 folds per seed; pair 5 seeds; finite collapse retained",
+    "amp": false,
+    "restart": "complete run only; interrupted attempts preserved; restart from seed",
+    "provenance": "P: ASDA Algorithm1 last-view interpretation; C: torchvision RA/GLS D; J: common protocol; E: explicit adaptation",
+    "limits": "Algorithm1 last differs from prose consistent-version wording; index2/31 not proven author M2; joint BN not verified author default"
+  },
+  "executed_source_sha256": {
+    "src/_klsg_blind.py": "737b99414cd98ec9e877e8f1ef62a8271627cfa43fd064c2a54c7f4812dff52a",
+    "src/extra/asda/artifacts.py": "e1d4eada581647294c880644831a24147063b3d00dd84e599b0a1a385bfd0960",
+    "src/extra/asda/common.py": "a2bd46cce0a29da290af7ebdea8e225e8e9d7351500e2eb7b2b2e344c4f5906e",
+    "src/extra/asda/data.py": "d2acb37982eee82b8077241c853964c483ab985f851079e28d30e4d8b386ed5d",
+    "src/extra/asda/evaluate_asda.py": "7d3d3c534a5488c8e6271cfc128fc4623c910b3f1a291a33909720da230dc8bb",
+    "src/extra/asda/model.py": "9d7f72da775fd9627dd660e118fa29d48da0a047417f1a081c5a23c5d40ba70f",
+    "src/extra/asda/preflight.py": "772b00c5d81bb9865b35beb1a9fa568027025287f6fab5df5119d01e601d4d11",
+    "src/extra/asda/run_matrix.py": "bdc967b5da44207332753289cd7ddc0090b4b0095b1e8de7795f2d1bfda6fcfb",
+    "src/extra/asda/train_asda.py": "657ecb88bcd792e0ee762c93f990d63470bde573eb8929ebd7f15740ef6f08b6",
+    "src/run1_s4_baseline_ceiling/_station6_delta_engine.py": "69689b8d910cb799e83834ba270ae03848e04d04d2418293c4bc44c2765bd2b6",
+    "src/run1_s4_baseline_ceiling/metrics_lib.py": "36fb316c1096eae74533cd9ba31992221dd9b4a7c1907e9f6c4e9ebf4fec4a3e",
+    "src/run2_s5_cdan/train_cdan_sgd.py": "5bc53baa3599cf64dfb3667073dc2945689676a98aaddb39dbe2116d9c52ee7d"
+  },
+  "executed_source_relation": {
+    "src/extra/asda/artifacts.py": "public, byte-identical",
+    "src/extra/asda/data.py": "public, byte-identical",
+    "src/extra/asda/train_asda.py": "public, byte-identical",
+    "src/extra/asda/common.py": "public port, see public_source_relation",
+    "src/extra/asda/evaluate_asda.py": "public port, see public_source_relation",
+    "src/extra/asda/model.py": "public port, see public_source_relation",
+    "src/extra/asda/run_matrix.py": "public port, see public_source_relation",
+    "src/extra/asda/preflight.py": "not public: pre-run acceptance script; its checks that need neither local images nor earlier checkpoints are reproduced in tests/test_asda.py",
+    "src/_klsg_blind.py": "public since v1.0.0; the public file differs from the executed working copy only in two message strings, comments and its self-test, so the code used by ASDA is otherwise identical",
+    "src/run1_s4_baseline_ceiling/metrics_lib.py": "not public; the scoring function used by the ASDA evaluator is in scoring.py with unchanged code",
+    "src/run1_s4_baseline_ceiling/_station6_delta_engine.py": "not public; the paired-contrast functions used by the ASDA evaluator are in scoring.py with unchanged code",
+    "src/run2_s5_cdan/train_cdan_sgd.py": "digest recorded for provenance; not imported by the ASDA code. The public v1.0.0 file differs from the executed working copy in documentation, local-path and default settings, an input guard, an optional pretrained flag and output handling; tests/test_asda.py checks its transforms, class weights and optimisation constants against the ASDA code"
+  },
+  "public_source_relation": {
+    "common.py": "port (local paths removed; the software-version check reports instead of refusing; the ImageNet initialisation is downloaded and verified by SHA-256; run configurations no longer record the interpreter path or an internal record digest, and their source digests cover the public files only; a missing nvidia-smi no longer stops a run)",
+    "model.py": "port (initialisation loading)",
+    "evaluate_asda.py": "port (scoring import; relative paths in outputs; reference file holding #1 and #2, the two references of the paired ASDA contrasts in Table E.3, so the aggregate computes contrasts with #1 and #2 only, whereas the executed aggregate also listed contrasts with #5 and #7, which the manuscript does not report)",
+    "run_matrix.py": "port (interpreter)",
+    "data.py": "identical",
+    "train_asda.py": "identical",
+    "artifacts.py": "identical",
+    "scoring.py": "new file: functions copied from the executed helper modules; code identical, docstrings rewritten"
+  },
+  "inputs": {
+    "recorded_sha256": {
+      "splits.csv": "daac2764fd40a785037f142c49ac2b682eb36fc7f0ede4bbf41d03b29278f0c8",
+      "splits_manifest.json": "86ab4ed3526c169558f44159a1330a5ae9580377388a666ce33bc883fff31328",
+      "klsg_unlabeled_manifest.txt": "f7241c601543999f1cc14a7947df5962e25a94c44f687980b8184ea64b66bc23"
+    },
+    "public_sha256": {
+      "splits.csv": "1483c46a32f559a91e0fb84d2c6137d649965f1daae6b17ba13e559fc8788992",
+      "splits_manifest.json": "1b20b8c5faafd3031db02a7a8f008da6dd17ae4e525e87de7fc9e7c6250ff997",
+      "klsg_unlabeled_manifest.txt": "f7241c601543999f1cc14a7947df5962e25a94c44f687980b8184ea64b66bc23"
+    },
+    "note": "The run records hold digests of working copies with CRLF line endings. The public splits.csv and splits_manifest.json contain the same text with LF endings; klsg_unlabeled_manifest.txt is byte-identical."
+  },
+  "initialization": {
+    "weights": "resnet18-f37072fd.pth (torchvision ResNet18_Weights.IMAGENET1K_V1)",
+    "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+  },
+  "randaugment_source": {
+    "file": "torchvision/transforms/autoaugment.py of torchvision 0.24.1+cu128",
+    "sha256": "5b0592607faaef5cfbe3c01542ef4cb5fe85a3ac5c9a66f0b0c0a04b6dbeebb3"
+  },
+  "environment": {
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Mar 11 2026, 17:12:15) [MSC v.1942 64 bit (AMD64)]",
+    "torch": "2.9.1+cu128",
+    "torchvision": "0.24.1+cu128",
+    "cuda": "12.8",
+    "cudnn": 91002,
+    "gpu": "NVIDIA GeForce RTX 5090 Laptop GPU",
+    "gpu_total_bytes": 25650855936,
+    "cpu": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "driver": "591.86",
+    "cublas_workspace": ":4096:8",
+    "deterministic": true,
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "matmul_allow_tf32": false,
+    "cudnn_allow_tf32": true,
+    "float32_matmul_precision": "highest",
+    "amp": false,
+    "torch_threads": 24
+  },
+  "execution": {
+    "training_stage_utc": [
+      "2026-09-17T01:26:13.636378+00:00",
+      "2026-09-17T04:25:01.730499+00:00"
+    ],
+    "evaluation_stage_utc": [
+      "2026-09-17T04:25:59.908667+00:00",
+      "2026-09-17T04:34:48.642568+00:00"
+    ],
+    "aggregation_stage_utc": [
+      "2026-09-17T04:34:51.024509+00:00",
+      "2026-09-17T04:35:20.097780+00:00"
+    ],
+    "first_target_label_read_utc": "2026-09-17T04:26:21.010491+00:00",
+    "last_target_label_read_utc": "2026-09-17T04:34:46.125649+00:00",
+    "all_training_completed_before_first_label_read": true
+  },
+  "runs": {
+    "asda_s0_f0": "a17d3703d1cbdae7bc7d78bad9be8f18d26da434f95e2b7b948aaf848d1e940d",
+    "asda_s0_f1": "e35d8653b2bccf361a8d9ec7f060ccb1ca71276296b4f3f8f787be727a1e19a4",
+    "asda_s0_f2": "f4acd0574db705094a4b2e319eb8b06beb44eec3c253c951be69d632d4bb0d29",
+    "asda_s0_f3": "41c43318d1c5c050efd0c9b3ec49e89b68c719049ea5f86ace002d3751943d50",
+    "asda_s0_f4": "08ab07b76ac9b13e9d5e7b55864f68e66539493ae8c9041b30facc140f2049e1",
+    "asda_s1_f0": "f14ff33b79944add067b2199253ae10c4bf1fb016b720cf97423122cd03b4fea",
+    "asda_s1_f1": "6078091c5d6f2b88718f79b0987a47911dd5a002f689e10013a619e777d36e06",
+    "asda_s1_f2": "c7a43e3caa1452c34ef8367b69115cac16ec6bafda1c86613d389936a1603dea",
+    "asda_s1_f3": "35681f897f6c2a5dafa52db92eb5135beb00d0482132020088c9c69910930314",
+    "asda_s1_f4": "5815eec4c604920dfc0c5bcdadc81ce074eaf553af2f265719f185b993599bec",
+    "asda_s2_f0": "bfb9faba01e896b4dd65c2c13f798a233f61e17482fcaf1da9cb05222b1cb199",
+    "asda_s2_f1": "5df8ee36c0053d5dcf27d09b3362056d8a0711f7944eeb3bc6d0cee293185ae3",
+    "asda_s2_f2": "b7c65ee24c3df1108b18c8fc698a830b3be805ef1b006c0e4c7a55d67dd7c9ae",
+    "asda_s2_f3": "23e0847eb3e0a9cace07c26a30e3f4e4dcf263cc6a3625511a1d6608bffb61bc",
+    "asda_s2_f4": "5aace01d46e2a8be0d6a1181e8c2a19647d265cd2c1225ae30ce13adbbdf99d4",
+    "asda_s3_f0": "3c88dac3b21a38e82153d8b06d0f52007fe008525b68f185c85cd03ce63924d4",
+    "asda_s3_f1": "ba2f2db40f22eb4e3f521ab964b0d49c36a5256a3830962048fb4b4b4c61987c",
+    "asda_s3_f2": "85ae12af1cb52ebed56fd35de170c9d4e051db64372661bc8c74bec784209017",
+    "asda_s3_f3": "dab5ae3f72ef27b14fcf92c6d2c27d61e42d5dfecc524f70cfacd4b2eba16c40",
+    "asda_s3_f4": "869290ca8a6b1d904491cca0efb67d9df7975ed09af279027b4203a97e8e128b",
+    "asda_s4_f0": "468a17e229ac695489ca23744bbc9b9ea2d5521a6fd6d73c7853c76668e262ed",
+    "asda_s4_f1": "3b6bcf129140251795915bb5896c955da2bff3f2151d1c416553b27aca7fe243",
+    "asda_s4_f2": "3cd0afb7d4b936bd58f31c2785aa6938e0138f32a4cc8c005d503af8f12ecb14",
+    "asda_s4_f3": "dcc844d1a8702123f906116a2f50ce351a413e50277b766764817aedecc47cb9",
+    "asda_s4_f4": "2f84edb924ea6e897e22afa37198d657eff0d610590ff38d20482ab7a4ca3b66"
+  }
+}

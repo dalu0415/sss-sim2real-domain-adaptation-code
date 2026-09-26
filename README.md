@@ -9,8 +9,9 @@ accompanying the manuscript:
 
 The repository covers the final semi-synthetic source-generation pipeline,
 data loading and split metadata, source-only and domain-adaptation training,
-fixed last-K evaluation, and the simulation-source validity assessment. It is
-a research artifact and reference implementation, not a zero-configuration or
+fixed last-K evaluation, the simulation-source validity assessment, and the
+complete ASDA comparator with the records of its archived runs. It is a
+research artifact and reference implementation, not a zero-configuration or
 one-command reproduction package.
 
 ## Repository contents
@@ -25,11 +26,13 @@ one-command reproduction package.
 | `src/run4_s5_iwcdan_frozen/` | Frozen-BN IW-CDAN diagnostic configurations |
 | `src/run5_s5_iwcdan_dsbn/` | DSBN IW-CDAN |
 | `src/extra/` | DANN, MCC, and MDD supplementary candidates |
+| `src/extra/asda/` | Complete ASDA comparator, implemented independently from the published method |
 | `src/evaluation/` | Frozen scoring, collapse diagnostics, paired statistics, and multiplicity correction |
 | `src/simulation_validity/` | Format probe, fixed-target E2, and paired simulation-source analysis |
 | `configs/` | Frozen experiment matrix and simulation-validity contract |
 | `data/` | Dataset metadata, integrity records, and split manifests; no third-party image bytes |
 | `evidence/simulation_validity/` | Structured evidence supporting the selected simulation source |
+| `evidence/asda/` | Structured records of the 25 archived ASDA runs |
 | `tests/` | Public regression and evidence-integrity tests |
 
 ## Environment
@@ -110,7 +113,12 @@ data/
 
 The source generator uses modified material or statistics from
 [AI4Shipwrecks](https://doi.org/10.7302/dmf4-x492), which is licensed under
-CC BY 4.0. Original AI4Shipwrecks files are not redistributed. The archived
+CC BY 4.0. Original AI4Shipwrecks files are not redistributed. The
+target-highlight texture and seabed brightness statistics were fitted to
+AI4Shipwrecks; KLSG-II did not supply these statistics, and none of the
+third-party silhouette inputs was derived from KLSG-II images. This concerns
+the provenance of the synthesis inputs; KLSG-II was used to assess and develop
+the source, as described under Core evaluation below. The archived
 reference pipeline also retains preparation stages for locally supplied
 Marine-PULSE/URM inputs. A full regeneration additionally requires local
 airplane/ship silhouette inputs, the curated `relook_strict.csv` frame
@@ -189,8 +197,10 @@ UDA losses, target-weight estimation, model selection, and early stopping.
 Within the main benchmark, they are used for supervised-ceiling fold
 construction, supervised-ceiling training and held-out scoring, and explicit
 post-freeze final scoring. Separately, the simulation-source validity study
-uses KLSG-II labels for frozen E2 scoring and the resulting target-aware arm2
-selection; that limitation is documented below.
+uses KLSG-II labels to group the real images for the class-wise format probe,
+and for frozen E2 scoring and the resulting target-aware arm2 selection;
+KLSG-II images also informed visual morphology decisions during source
+development. That limitation is documented below.
 
 ## Source generation and simulation-validity evidence
 
@@ -216,6 +226,26 @@ See [`src/simulation_validity/README.md`](src/simulation_validity/README.md) for
 the format-probe protocol, 12-seed fixed-target E2 design, quantitative results,
 arm2 selection rationale, counterevidence, and interpretation limits.
 
+## ASDA comparator
+
+[`src/extra/asda/`](src/extra/asda/) contains the complete ASDA comparator
+reported in the manuscript, implemented independently from the equations and
+Algorithm 1 of Gou and Cui (2026). Its
+[README](src/extra/asda/README.md) gives the implementation conventions of
+manuscript Table E.1, the target-label boundary, the commands for the 25
+seed/fold runs, and the relation between the public and the executed code.
+[`evidence/asda/`](evidence/asda/) holds the structured records of the 25
+archived runs. The manuscript's values for the complete comparator (Table 6,
+Tables E.2 and E.3, and its cost records) can be recomputed from them without
+images or a GPU:
+
+```text
+python -m unittest tests.test_asda -v
+```
+
+ASDA checkpoints and prediction arrays, and the code of the post-hoc ASDA
+diagnostics in Appendices E.3 and E.4 of the manuscript, are not included.
+
 ## Tests
 
 Run the public test suite from the repository root:
@@ -224,16 +254,29 @@ Run the public test suite from the repository root:
 python -m unittest discover -s tests -v
 ```
 
+The tests use synthetic arrays and the tracked evidence files; they need no
+image data or GPU.
+
 The repository does not include KLSG-II images, original AI4Shipwrecks files,
 the four simulation-source arm trees, training checkpoints, or the main paper
-experiment outputs. GPU-heavy training and format-probe reruns therefore
+experiment outputs (apart from the structured ASDA run records and the
+seed-level values of two reference arms in `evidence/asda/`). GPU-heavy
+training and format-probe reruns therefore
 require separately obtained inputs and suitable hardware.
+
+## Versions
+
+- v1.1.0 adds the complete ASDA comparator (`src/extra/asda/`), the records of
+  its 25 archived runs (`evidence/asda/`) and `tests/test_asda.py`, and updates
+  the documentation accordingly.
+- v1.0.1 keeps the frozen evidence files in LF line endings on checkout.
+- v1.0.0 is the initial public code release.
 
 ## Licence and citation
 
 Source code and accompanying documentation are released under the
 [MIT License](LICENSE). This repository grants no licence for non-included
 image data or other external inputs. Portions adapted from upstream
-MIT-licensed implementations retain their notices in
+MIT- or BSD-licensed implementations retain their notices in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). Citation metadata for this
 repository is provided in [`CITATION.cff`](CITATION.cff).

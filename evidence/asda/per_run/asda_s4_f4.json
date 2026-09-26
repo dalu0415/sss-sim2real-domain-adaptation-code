@@ -1,0 +1,124 @@
+{
+  "run": "asda_s4_f4",
+  "seed": 4,
+  "fold": 4,
+  "attempt": "attempt_001",
+  "config_sha256": "2f84edb924ea6e897e22afa37198d657eff0d610590ff38d20482ab7a4ca3b66",
+  "protocol_sha256": "6d510e4df0e30a0a6f5d94c4dc5594e066ff9ba3be049e4b082777325ec6b53b",
+  "source_train": {
+    "n": 392,
+    "airplane": 72,
+    "ship": 320,
+    "ids_sha256": "df53e4654070e93c1e93a887366cc1ce8bcc465e7c074259dd4ed255bfb939df"
+  },
+  "target": {
+    "n": 553,
+    "airplane": 66,
+    "ship": 487,
+    "manifest_sha256": "f7241c601543999f1cc14a7947df5962e25a94c44f687980b8184ea64b66bc23"
+  },
+  "adjudication": {
+    "macro_f1": 0.1176544583035407,
+    "per_class": {
+      "airplane": {
+        "precision": 0.12043795620437957,
+        "recall": 1.0,
+        "f1": 0.21498371335504887,
+        "support": 66
+      },
+      "ship": {
+        "precision": 1.0,
+        "recall": 0.01026694045174538,
+        "f1": 0.02032520325203252,
+        "support": 487
+      }
+    },
+    "confusion_matrix": [
+      [
+        66,
+        0
+      ],
+      [
+        482,
+        5
+      ]
+    ],
+    "cm_axis": "rows=true, cols=pred, order=[airplane, ship]",
+    "airplane_pr_auc": 0.15036236989262788
+  },
+  "predicted_counts": {
+    "airplane": 548,
+    "ship": 5
+  },
+  "dominant_class": "airplane",
+  "dominant_share": 0.9909584086799277,
+  "training": {
+    "updates": 240,
+    "epochs": 40,
+    "checkpoint_epochs": [
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "training_loop_seconds": 470.75149950000196,
+    "data_augmentation_seconds": 386.4574487999853,
+    "synchronized_update_seconds": 83.11469650002255,
+    "checkpoint_save_seconds": 0.5395586999948137,
+    "peak_allocated_bytes": 7552810496,
+    "peak_reserved_bytes": 12090081280,
+    "forward_MACs_per_update_conv_linear": {
+      "G": 580339630080,
+      "C": 327680,
+      "D": 671416320
+    },
+    "parameters": {
+      "G": 11176512,
+      "C": 1026,
+      "D": 2100225
+    },
+    "target_iterator_renewals": 29
+  },
+  "prediction": {
+    "target_last5_seconds": 7.01295620000019,
+    "scope": "five passes over the 553 target images, including image loading and device transfer; excludes checkpoint loading, source diagnostics, scoring and saving"
+  },
+  "label_access": {
+    "first_read_utc": "2026-09-17T04:34:46.125649+00:00",
+    "n_labels_read": 553
+  },
+  "checkpoint_sha256": {
+    "asda_epoch036.pth": "dc43e2cdc567b339e6333a820836d4e03dab6d2daf44c4845dc28f4ec7257acd",
+    "asda_epoch037.pth": "95a24e3a9df913c7a17a0a592c40bbbf8917b23bd0b90624b6097abc544ff99d",
+    "asda_epoch038.pth": "9f5392c36fb0b2614c1a7fdb4345c9c68f9ff440fe22beab7a14a1dc57225870",
+    "asda_epoch039.pth": "f411e2bd46c3e1202d20baedb272aa7ddd95315981558ccf765e6dc120681ca0",
+    "asda_epoch040.pth": "e864184cb9ca16a161180e5518b99d54bcf8e77bd2aeaa4018e8cb364af6c336"
+  },
+  "training_artifact_sha256": {
+    "config.json": "4b3b016c8bf76eef50d53f10f1e019718da4ecc93b9c5b0ebf6e5ad6bc318317",
+    "steps.jsonl": "3615a60170535a55ddf274b8c68a888564792b1356c6f9982671d03f176d6429",
+    "cost.json": "faf1c645feb97e93065e47533b36bfc732dbf015e7d73c68e9f3536733e60213"
+  },
+  "evaluation_artifact_sha256": {
+    "epoch036.npz": "972c103162e5300f4b56c7076344a8d188073ceaecd64b8832a108e96671166f",
+    "epoch037.npz": "4401e5ef6e0cb061d8cc0e5f93dc06befd5b9abdf82a8ac0e24deb1d8b592b5a",
+    "epoch038.npz": "e80af4436b754862c43705cb183d6da7022420a41ad23a487d7c55607a73551f",
+    "epoch039.npz": "82a65e04850803d1dbfdab4523f715a3b94f0d2451b3e04161c77d67f3c2300d",
+    "epoch040.npz": "a99391173ee04adfd9de542f9d3745d20c48dd912b24981d62f26f22d19ecb4f",
+    "evaluation_cost.json": "ea7686589846b12bcc62c7e46e072d1b4471ef3202a7a4bf8da001eea1ace295",
+    "metrics.json": "3fac9d73402a58219ec058cf6bf22d8fa4ffe44a591251e5a4a3b66cbb0f0f06",
+    "predictions.npz": "eb3ecd4b51574e8b767847d9228a02ecbdc5c59ef83a3cee0b01bcc8ef08a52a",
+    "_LABEL_ACCESS_LOG.txt": "9e31e09150fd2975592151cd19642ec6f400b2b8832319f0b70a4c1eeca1306c",
+    "bundle/feats_source.npy": "b459172bd3f81ce1d0a87aef26c98711f016fc7058c86e2b67cc4ad8e9b647b7",
+    "bundle/feats_target.npy": "ff6e0653a0d60c08dba0f2defee6879e2985707a4719b16fa6277f11e4d80d88",
+    "bundle/meta.json": "81f43fcf33d3018f44a5b2d72d85524fc4a0de767a182c1c2e863f3d4ae7bd77",
+    "bundle/probs.npy": "145512ad818d0c0e18c9d52e59e71b0bf06c1a9ae863aba69f475bf14dddea58",
+    "bundle/src_probs.npy": "94e6d52a0822815fb5927704590580f0a4e06f1b897b0c79c58767d0c82f0476",
+    "bundle/src_y_true.npy": "8b2f5f8132dfeea7e7cb871845105dfc7836a6c8318f3f15a54f83ea269a555a",
+    "bundle/target_ids.npy": "6bedaf96b832a85d73e542caebaf1d3cd2ccf9bc703efd89cbe9d77a2b84bb70",
+    "bundle/tgt_paths.txt": "f167818c9439bd6026238a1660a72a7c3aba6d7050d4b966a424f70ec71336c9",
+    "bundle/y_pred.npy": "67c57edf83d7b0cef7b6781881ee1184251cc190c467b1101ba2309aa8a81bd9",
+    "bundle/y_true.npy": "79222952c46ce63ad0765febd9e5d784067221f80474debe9b29de913f2b5a88"
+  }
+}

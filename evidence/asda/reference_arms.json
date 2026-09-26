@@ -1,0 +1,153 @@
+{
+  "description": "Seed-level values of #1 source-only and #2 source-only+AdaBN, the two references of the paired ASDA contrasts in manuscript Table E.3 (their means are also rows of Table 6). Each value averages five source-fold metrics on the full 553-image target. Copied without change from the frozen aggregate of the BN-focused comparison; only the five metrics used in the ASDA contrasts are kept.",
+  "source_aggregate_sha256": "3d66f1b1e8b148f4fd8352ce3bc93f8487d63d7d8f59c345d459cb5d719f96d3",
+  "metrics": [
+    "macro_f1",
+    "airplane_f1",
+    "airplane_pr_auc",
+    "airplane_p",
+    "airplane_r"
+  ],
+  "arms": [
+    {
+      "arm_id": "#1",
+      "label": "source-only",
+      "scope": "all",
+      "n_seeds": 5,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "per_seed_points": [
+        {
+          "seed": 0,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6204144230083908,
+            "airplane_f1": 0.37041311316760417,
+            "airplane_pr_auc": 0.3661204756160874,
+            "airplane_p": 0.2872860776010487,
+            "airplane_r": 0.5303030303030303
+          }
+        },
+        {
+          "seed": 1,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6442471002824036,
+            "airplane_f1": 0.39195656868709416,
+            "airplane_pr_auc": 0.3798154295736525,
+            "airplane_p": 0.33679088279306746,
+            "airplane_r": 0.47878787878787876
+          }
+        },
+        {
+          "seed": 2,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6017568367215808,
+            "airplane_f1": 0.370596606909641,
+            "airplane_pr_auc": 0.3587385399384577,
+            "airplane_p": 0.2631755663295088,
+            "airplane_r": 0.6393939393939394
+          }
+        },
+        {
+          "seed": 3,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6466783873079249,
+            "airplane_f1": 0.4170722888099937,
+            "airplane_pr_auc": 0.4085862268121456,
+            "airplane_p": 0.3351569541423381,
+            "airplane_r": 0.5878787878787879
+          }
+        },
+        {
+          "seed": 4,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6215328015856333,
+            "airplane_f1": 0.37961197983264117,
+            "airplane_pr_auc": 0.36512663405765616,
+            "airplane_p": 0.29134201255220366,
+            "airplane_r": 0.5666666666666667
+          }
+        }
+      ]
+    },
+    {
+      "arm_id": "#2",
+      "label": "source-only+AdaBN",
+      "scope": "all",
+      "n_seeds": 5,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "per_seed_points": [
+        {
+          "seed": 0,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6781876641395735,
+            "airplane_f1": 0.43756280183524765,
+            "airplane_pr_auc": 0.45692730460276054,
+            "airplane_p": 0.42345729926275477,
+            "airplane_r": 0.4575757575757576
+          }
+        },
+        {
+          "seed": 1,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6807613234478732,
+            "airplane_f1": 0.43608500468931904,
+            "airplane_pr_auc": 0.4326704350879987,
+            "airplane_p": 0.4492048229982709,
+            "airplane_r": 0.42727272727272725
+          }
+        },
+        {
+          "seed": 2,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.6872761658166031,
+            "airplane_f1": 0.4498082271835332,
+            "airplane_pr_auc": 0.4295649083309524,
+            "airplane_p": 0.44666539794127663,
+            "airplane_r": 0.45454545454545453
+          }
+        },
+        {
+          "seed": 3,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.7038689264015594,
+            "airplane_f1": 0.4739406549086414,
+            "airplane_pr_auc": 0.47496406310795825,
+            "airplane_p": 0.5160006380120226,
+            "airplane_r": 0.44242424242424244
+          }
+        },
+        {
+          "seed": 4,
+          "n_folds": 5,
+          "values": {
+            "macro_f1": 0.67875683674404,
+            "airplane_f1": 0.4355367234057433,
+            "airplane_pr_auc": 0.42036583503149155,
+            "airplane_p": 0.4298975700119865,
+            "airplane_r": 0.44242424242424244
+          }
+        }
+      ]
+    }
+  ]
+}
